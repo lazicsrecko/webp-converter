@@ -1,0 +1,30 @@
+﻿<Window x:Class="ImageConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageConverter" 
+        xmlns:view="clr-namespace:ImageConverter.View"
+        xmlns:viewmodel="clr-namespace:ImageConverter.ViewModel"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+        mc:Ignorable="d"
+        Title="Webp Converter" Height="600" Width="800" ResizeMode="NoResize">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" FontSize="14">
+            <MenuItem Header="_File">
+                <MenuItem 
+                    x:Name="ExitApplication"
+                    Header="Exit"
+                    Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem 
+                    x:Name="About" 
+                    Header="About"
+                    Command="{Binding ShowAboutWindowCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <ContentControl Content="{Binding Navigation.CurrentView}" />
+    </DockPanel>
+</Window>

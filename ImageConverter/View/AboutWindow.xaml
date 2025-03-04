@@ -1,0 +1,44 @@
+﻿<Window x:Class="ImageConverter.View.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageConverter.View"
+        xmlns:viewmodel="clr-namespace:ImageConverter.ViewModel"
+        d:DataContext="{d:DesignInstance Type=viewmodel:AboutWindowViewModel}"
+        mc:Ignorable="d"
+        Title="About" Height="250" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+        <TextBlock 
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Text="About Image Converter" />
+        <StackPanel
+            Grid.Column="1"
+            Grid.Row="1">
+            <TextBlock
+                Text="Webp Converter (64-bit)"/>
+            <TextBlock
+                Text="{Binding VersionString}"/>
+            <TextBlock>
+                <Hyperlink 
+                    NavigateUri="https://github.com/lazicsrecko"
+                    Command="{Binding OpenGithubRepoCommand}"
+                    CommandParameter="https://github.com/lazicsrecko">
+                    github.io/lazicsrecko
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
