@@ -2,4 +2,10 @@
 
 Simple GUI for underlaying WebP Converter (Google)
 
-Applciation uses cwebp.exe for converting images from .jpg, .jpeg and .png to .webp format
+Supported input image format:
+  - .png
+  - .jpg
+  - .jpeg
+
+Supported output format:
+  - .webp
