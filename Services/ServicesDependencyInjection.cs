@@ -11,6 +11,7 @@ namespace Services
         {
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IConverterService, ConverterService>();
+            services.AddSingleton<IMessageBoxService, MessageBoxService>();
         }
     }
 }

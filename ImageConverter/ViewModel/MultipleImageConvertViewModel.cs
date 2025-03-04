@@ -1,7 +1,10 @@
 ﻿using Core.Command;
 using Core.Interface;
+using Core.Interface.ViewModel;
 using Core.ViewModel;
 using Microsoft.Win32;
+using System.IO;
+using System.Text;
 using System.Windows;
 
 namespace ImageConverter.ViewModel
@@ -10,35 +13,24 @@ namespace ImageConverter.ViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IConverterService _converterService;
+        private readonly IMessageBoxService _messageBoxService;
+        private readonly IConverterOptions _converterOptions;
         private OpenFileDialog _imagesPaths;
-        private short _imageQuality = 80;
 
-        public MultipleImageConvertViewModel(INavigationService navigationService, IConverterService converterService)
+        public MultipleImageConvertViewModel(
+            INavigationService navigationService,
+            IConverterService converterService,
+            IMessageBoxService messageBoxService,
+            IConverterOptions converterOptions)
         {
             _navigationService = navigationService;
             _converterService = converterService;
+            _messageBoxService = messageBoxService;
+            _converterOptions = converterOptions;
         }
 
-        public short ImageQuality 
-        { 
-            get => _imageQuality;
-            set
-            {
-                if (value < 0)
-                {
-                    _imageQuality = 0;
-                }
-                else if (value > 100) 
-                {
-                    _imageQuality = 100;
-                }
-                else
-                {
-                    _imageQuality = value;
-                }
-                OnPropertyChanged(nameof(ImageQuality));
-            }
-        }
+        public IConverterOptions ConverterOptionsDataContext => _converterOptions;
+
         public OpenFileDialog ImagesPaths
         { 
             get => _imagesPaths;
@@ -54,38 +46,65 @@ namespace ImageConverter.ViewModel
 
         private void ConvertImages()
         {
-            var isConverted = _converterService.ConvertMultipleImages(ImagesPaths.FileNames, ImageQuality);
+            var nonExistantPaths = CheckIfPathsExists(ImagesPaths.FileNames);
+
+            if (nonExistantPaths.Count != 0)
+            {
+                string errorPaths = ExtractErrorPaths(nonExistantPaths);
+                string message = $"Images at paths: {errorPaths} doesn't exist!";
+                _messageBoxService.ShowErrorMessageBox(message);
+                return;
+            }
+
+            var isConverted = _converterService.ConvertMultipleImages(ImagesPaths.FileNames);
 
             if (isConverted)
             {
-                ShowSuccessMessageBox();
+                _messageBoxService.ShowSuccessMessageBox("Images successfuly converted!");
                 ReturnHome();
             }
             else
             {
-                ShowErrorMessageBox();
+                _messageBoxService.ShowErrorMessageBox("Images conversion failed!");
             }
         }
-        private void ShowSuccessMessageBox()
-        {
-            string messageText = "Images successfuly converted!";
-            string caption = "Success";
-            MessageBoxButton button = MessageBoxButton.OK;
-            MessageBoxImage icon = MessageBoxImage.Information;
-            MessageBoxResult result;
 
-            result = MessageBox.Show(messageText, caption, button, icon);
+        private string ExtractErrorPaths(List<string> paths)
+        {
+            StringBuilder sb = new StringBuilder("");
+            if (paths == null || paths.Count == 0)
+            {
+                return sb.ToString();
+            }
+
+            for (var i = 0; i < paths.Count; i++)
+            {
+                if (i + 1 == paths.Count)
+                {
+                    sb.Append($"\"{paths[i]}\"");
+                }
+                else
+                {
+                    sb.Append($"\"{paths[i]}\", ");
+                }
+            }
+
+            return sb.ToString();
         }
 
-        private void ShowErrorMessageBox()
+        private List<string> CheckIfPathsExists(string[] paths)
         {
-            string messageText = "Images conversion failed!";
-            string caption = "Failed";
-            MessageBoxButton button = MessageBoxButton.OK;
-            MessageBoxImage icon = MessageBoxImage.Error;
-            MessageBoxResult result;
+            List<string> nonExistantPaths = new List<string>();
 
-            result = MessageBox.Show(messageText, caption, button, icon);
+            foreach (string path in paths)
+            {
+                if (!File.Exists(path))
+                {
+                    nonExistantPaths.Add(path);
+                }
+            }
+
+            return nonExistantPaths;
         }
 
         private void SelectImages()
@@ -106,8 +125,8 @@ namespace ImageConverter.ViewModel
 
         private void ResetState()
         {
-            ImageQuality = 80;
             ImagesPaths = null;
+            _converterOptions.ResetState();
         }
 
         private void ReturnHome()

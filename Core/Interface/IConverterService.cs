@@ -2,7 +2,7 @@
 {
     public interface IConverterService
     {
-        bool ConvertToWebp(string inputFile, string outputFile, short imageQuality);
-        bool ConvertMultipleImages(string[] imagesPaths, short imageQuality);
+        bool ConvertToWebp(string inputFile, string outputFile);
+        bool ConvertMultipleImages(string[] imagesPaths);
     }
 }

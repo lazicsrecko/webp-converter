@@ -43,19 +43,23 @@
                 Grid.Row="2" 
                 Height="20" 
                 Width="80" 
-                Margin="10, 10, 0, 0" 
+                Margin="10, 10, 0, 0"
+                Content="Back"
                 Command="{Binding ReturnHomeCommand}"
-                >Back</Button>
+        />
 
-        <StackPanel Grid.Column="1" Margin="10">
-            <Label>Quality:</Label>
-            <TextBox Width="100"
-                     MaxLength="3"
-                     HorizontalAlignment="Left"
-                     Text="{Binding ImageQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     />
-            <TextBlock>Value between 0-100</TextBlock>
-        </StackPanel>
+        <Label
+            Grid.Column="1"
+            Grid.Row="0"
+            FontSize="16"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            >Converter Options:</Label>
+
+        <!-- Options for cwebp.exe -->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <local:ConverterOptionsView DataContext="{Binding ConverterOptionsDataContext}" />
+        </Grid>
         <Button HorizontalAlignment="Left"
                 Grid.Column="1" 
                 Grid.Row="3"

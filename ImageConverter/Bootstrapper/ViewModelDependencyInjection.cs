@@ -1,4 +1,5 @@
 ﻿using Core.Interface;
+using Core.Interface.ViewModel;
 using Core.ViewModel;
 using ImageConverter.Services;
 using ImageConverter.ViewModel;
@@ -20,6 +21,7 @@ namespace ImageConverter.Bootstrapper
             services.AddSingleton<SingleImageConvertViewModel>();
             services.AddSingleton<MultipleImageConvertViewModel>();
             services.AddSingleton<AboutWindowViewModel>();
+            services.AddSingleton<IConverterOptions, ConverterOptionsViewModel>();
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
         }
     }
