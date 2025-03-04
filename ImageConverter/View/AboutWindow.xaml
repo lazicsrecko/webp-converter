@@ -33,10 +33,8 @@
                 Text="{Binding VersionString}"/>
             <TextBlock>
                 <Hyperlink 
-                    NavigateUri="https://github.com/lazicsrecko"
-                    Command="{Binding OpenGithubRepoCommand}"
-                    CommandParameter="https://github.com/lazicsrecko">
-                    github.io/lazicsrecko
+                    Command="{Binding OpenGithubRepoCommand}">
+                    GitHub repository
                 </Hyperlink>
             </TextBlock>
         </StackPanel>
