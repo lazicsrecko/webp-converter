@@ -42,12 +42,12 @@ jobs:
     
     # Publish artifacts
     - name: Publish application
-      run: dotnet publish -o $env:publish_folder -c $env:configuration -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --no-build $env:main_project
+      run: dotnet publish -c $env:configuration -r win-x64 --self-contained true -o $env:publish_folder -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --no-build $env:main_project
     
     # Upload the exe file 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-publish
+        name: webp-converter-artifacts
         path: $env:publish_folder
         retention-days: 5
