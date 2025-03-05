@@ -3,6 +3,7 @@ name: WebPConverter Pipeline
 on:
   push:
     branches: [ "release" ]
+  workflow_dispatch:
 
 jobs:
 
