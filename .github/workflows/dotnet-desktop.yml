@@ -10,6 +10,7 @@ jobs:
     runs-on: windows-latest
     env:
       solution_name: ${{github.workspace}}\ImageConverter.sln
+      main_project: ${{github.workspace}}\WebPConverter\WebPConverter.csproj
       configuration: Release
       publish_folder: ${{github.workspace}}\publish
       # Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
@@ -40,7 +41,7 @@ jobs:
     
     # Publish artifacts
     - name: Publish application
-      run: dotnet publish -o $env:publish_folder -c $env:configuration -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --no-build $env:solution_name
+      run: dotnet publish -o $env:publish_folder -c $env:configuration -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --no-build $env:main_project
     
     # Upload the exe file 
     - name: Upload build artifacts
