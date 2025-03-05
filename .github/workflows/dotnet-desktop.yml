@@ -1,0 +1,51 @@
+name: WebPConverter Pipeline
+
+on:
+  push:
+    branches: [ "release" ]
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    env:
+      solution_name: ${{github.workspace}}\ImageConverter.sln
+      configuration: Release
+      publish_folder: ${{github.workspace}}\publish
+      # Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Setup .NET 8 Environment
+    - name: Setup .NET 8 Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore $env:solution_name
+    
+    # Build solution
+    - name: Build application
+      run: dotnet build -c $env:configuration --no-restore $env:solution_name
+
+  # Execute all unit tests in the solution
+    #- name: Execute unit tests
+    #  run: dotnet test
+    
+    # Publish artifacts
+    - name: Publish application
+      run: dotnet publish -o $env:publish-folder -c $env:configuration -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --no-build $env:solution_name
+    
+    # Upload the exe file 
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-publish
+        path: $env:publish-folder
+        retention-days: 5
