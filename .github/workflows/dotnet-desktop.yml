@@ -14,7 +14,6 @@ jobs:
       main_project: ${{github.workspace}}\WebPConverter\WebPConverter.csproj
       configuration: Release
       publish_folder: ${{github.workspace}}\publish
-      exe_path: ${{github.workspace}}\publish\WebPConverter.exe
       # Test_Project_Path: your-test-project-path
 
     steps:
@@ -54,5 +53,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: webp-converter-artifacts
-        path: $env:exe_path
+        path: $env:publish_folder
         retention-days: 5
